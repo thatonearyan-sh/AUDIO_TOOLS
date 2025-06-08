@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+dist/
+*.egg-info/
+
+# Media & Outputs
+outputs/
+output/
+temp/
+cache/
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.aac
+!assets/*.mp3
+!assets/*.wav
+
+# Environment & Secrets
+.env
+.env.local
+*.local
+keys.json
+accounts.json
+!accounts.example.json
+!config.example.json
+
+# OS
+.DS_Store
+Thumbs.db
