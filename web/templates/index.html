@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" id="theme-color-meta" content="#0a0a0c" />
+  <title>Kronos Audio Studio</title>
+  
+  <!-- Phosphor Icons (Premium Minimalist Icons) -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Wavesurfer.js & Plugins -->
+  <script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
+  <script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <!-- Cinematic Tactile Noise Overlay -->
+  <svg class="pointer-events-none fixed inset-0 opacity-20" style="position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:9999; opacity:0.04;" xmlns="http://www.w3.org/2000/svg">
+    <filter id="noiseFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+  </svg>
+
+  <div id="app">
+    
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+      <div class="brand"><i class="ph-fill ph-waveform"></i> Kronos Audio Studio</div>
+      <button class="mobile-menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">
+        <i class="ph ph-list"></i>
+      </button>
+    </div>
+
+    <!-- ── 1. Sidebar Navigation ── -->
+    <nav id="sidebar">
+      <div class="brand">
+        <i class="ph-fill ph-waveform"></i>
+        <span>Kronos Audio Studio</span>
+        <button id="settings-btn" class="nav-btn" popovertarget="settings-popover" style="width:auto; margin-left:auto; padding:6px 10px; margin-bottom:0;">
+          <i class="ph ph-sliders"></i>
+        </button>
+      </div>
+      
+      <div class="nav-group">
+        <div class="nav-group-label">Core Tools</div>
+        <button class="nav-btn active" data-tool="crop"><i class="ph ph-scissors"></i> Trim / Crop</button>
+        <button class="nav-btn" data-tool="merge"><i class="ph ph-link"></i> Merge</button>
+        <button class="nav-btn" data-tool="overlay"><i class="ph ph-intersect"></i> Overlay</button>
+        <button class="nav-btn" data-tool="convert"><i class="ph ph-arrows-clockwise"></i> Convert</button>
+        <button class="nav-btn" data-tool="extract"><i class="ph ph-film-strip"></i> Extract Video</button>
+      </div>
+      
+      <div class="nav-group">
+        <div class="nav-group-label">Processing</div>
+        <button class="nav-btn" data-tool="volume"><i class="ph ph-speaker-high"></i> Volume</button>
+        <button class="nav-btn" data-tool="normalize"><i class="ph ph-sliders"></i> Normalize</button>
+        <button class="nav-btn" data-tool="speed"><i class="ph ph-fast-forward"></i> Speed</button>
+        <button class="nav-btn" data-tool="fade"><i class="ph ph-gradient"></i> Fade</button>
+        <button class="nav-btn" data-tool="silence"><i class="ph ph-speaker-x"></i> Strip Silence</button>
+        <button class="nav-btn" data-tool="reverse"><i class="ph ph-arrows-left-right"></i> Reverse</button>
+      </div>
+      
+      <div class="nav-group">
+        <div class="nav-group-label" style="color:#00E5FF;"><i class="ph-fill ph-star"></i> PRO Studio</div>
+        <button class="nav-btn" data-tool="transcribe"><i class="ph ph-text-aa"></i> Transcribe & Subtitles</button>
+        <button class="nav-btn" data-tool="isolate"><i class="ph ph-user-focus"></i> AI Vocal Isolation</button>
+        <button class="nav-btn" data-tool="master"><i class="ph ph-magic-wand"></i> AI Mastering</button>
+        <button class="nav-btn" data-tool="besttakes"><i class="ph ph-scissors-bold"></i> Auto Best Takes</button>
+        <button class="nav-btn" data-tool="tts"><i class="ph ph-microphone-stage"></i> AI Voiceovers</button>
+        <button class="nav-btn" data-tool="visualizer"><i class="ph ph-video-camera"></i> Audio Visualizer (MP4)</button>
+        <button class="nav-btn" data-tool="fx"><i class="ph ph-equalizer"></i> Pro FX (EQ/Reverb)</button>
+        <button class="nav-btn" data-tool="8d"><i class="ph ph-headphones"></i> 8D Spatial Audio</button>
+        <button class="nav-btn" data-tool="batch"><i class="ph ph-stack"></i> Batch Process Engine</button>
+      </div>
+
+      <!-- Theme Selector -->
+      <div class="theme-selector" style="margin-top:auto; padding-top:20px;">
+        <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px; font-weight:600; text-transform:uppercase; letter-spacing:1px; padding-left:4px;">Appearance</div>
+        <div class="apple-theme-grid">
+          <button class="theme-swatch" data-value="dark" style="background:#000000; border-color:#00E5FF;" title="Dark (OLED)" onclick="setTheme('dark')"></button>
+          <button class="theme-swatch" data-value="midnight" style="background:#050410; border-color:#9B72FF;" title="Midnight" onclick="setTheme('midnight')"></button>
+          <button class="theme-swatch" data-value="coffee" style="background:#171412; border-color:#D4A373;" title="Coffee" onclick="setTheme('coffee')"></button>
+          <button class="theme-swatch" data-value="forest" style="background:#050E09; border-color:#2ED573;" title="Forest" onclick="setTheme('forest')"></button>
+          <button class="theme-swatch" data-value="ocean" style="background:#000B18; border-color:#38BDF8;" title="Ocean" onclick="setTheme('ocean')"></button>
+          
+          <button class="theme-swatch" data-value="cyberpunk" style="background:#0A0015; border-color:#00FFFF;" title="Cyberpunk" onclick="setTheme('cyberpunk')"></button>
+          <button class="theme-swatch" data-value="dracula" style="background:#1E1F29; border-color:#8BE9FD;" title="Dracula" onclick="setTheme('dracula')"></button>
+          <button class="theme-swatch" data-value="monokai" style="background:#1E1F1C; border-color:#66D9EF;" title="Monokai" onclick="setTheme('monokai')"></button>
+          <button class="theme-swatch" data-value="sunset" style="background:#1A0B12; border-color:#FF7F50;" title="Sunset" onclick="setTheme('sunset')"></button>
+          
+          <button class="theme-swatch" data-value="light" style="background:#EBEBEF; border-color:#007AFF;" title="Light (Minimal)" onclick="setTheme('light')"></button>
+          <button class="theme-swatch" data-value="daylight" style="background:#E8DFD8; border-color:#C86B4F;" title="Daylight" onclick="setTheme('daylight')"></button>
+          <button class="theme-swatch" data-value="arctic" style="background:#DEE6ED; border-color:#0284C7;" title="Arctic" onclick="setTheme('arctic')"></button>
+          <button class="theme-swatch" data-value="matcha" style="background:#DBE5DD; border-color:#0E906F;" title="Matcha" onclick="setTheme('matcha')"></button>
+        </div>
+      </div>
+    </nav>
+      
+      <!-- Native HTML5 Popover for Settings (Zero JS) -->
+      <div id="settings-popover" popover>
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+          <h3 style="margin:0; font-family:var(--font-display); font-size:1.1rem; color:var(--text-main);">Presets & Settings</h3>
+          <p style="margin:0; font-size:0.85rem; color:var(--text-muted);">Save your current UI settings to a global preset.</p>
+          <button class="btn-primary" onclick="savePreset(); document.getElementById('settings-popover').hidePopover();">
+            <i class="ph ph-floppy-disk"></i> Save Current Preset
+          </button>
+          <button class="btn-primary" style="background: transparent; border:1px solid var(--border-light); color:var(--text-main); box-shadow:none;" onclick="loadPreset(); document.getElementById('settings-popover').hidePopover();">
+            <i class="ph ph-upload-simple"></i> Load Preset
+          </button>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- ── 2. Main Canvas ── -->
+    <main id="canvas">
+      <div class="canvas-header">
+        <h1 class="canvas-title" id="canvas-title">✂️ Trim / Crop</h1>
+        <p class="canvas-desc" id="canvas-desc">Cut audio between two specific timestamps.</p>
+      </div>
+      
+      <input type="file" id="dz-input" style="display:none" accept=".mp3,.wav,.ogg,.flac,.aac,.m4a,.wma,.opus,.mp4,.mkv,.avi,.mov,.webm,.flv,.wmv,.m4v,.3gp" multiple />
+      
+      <div id="dropzone">
+        <i class="ph ph-upload-simple"></i>
+        <h2>Drag & Drop your media here</h2>
+        <p>Or click to browse files</p>
+      </div>
+      
+      <div id="queue-container">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3><i class="ph ph-sliders"></i> Multi-Track Timeline</h3>
+        <button id="preview-mix-btn" class="btn-primary" style="padding:6px 12px; width:auto; font-size:0.85rem;" onclick="toggleMasterPlay()">
+          <i class="ph-fill ph-play"></i> Preview Mix
+        </button>
+      </div>
+      
+      <div class="timeline-layout" id="timeline-layout">
+         <div class="timeline-headers" id="timeline-headers">
+           <!-- Track headers generated here -->
+         </div>
+         <div class="timeline-tracks-wrapper" id="timeline-tracks-wrapper">
+            <div class="timeline-laser" id="timeline-laser" style="left:0px;"></div>
+            <div class="timeline-ruler" id="timeline-ruler"></div>
+            <div id="timeline-tracks-container" style="position:relative; width: 1000px; min-height: 100%;">
+              <!-- Track lanes and clips generated here -->
+            </div>
+         </div>
+      </div>
+      
+      <!-- MASTER HUD -->
+      <div id="master-hud" class="master-hud">
+        <button id="master-play-btn" onclick="toggleMasterPlay()" title="Play/Pause Mix"><i class="ph-fill ph-play"></i></button>
+        <div class="hud-timeline">
+          <span id="hud-time-current">0:00</span>
+          <div id="hud-scrubber" class="hud-scrubber" onmousedown="startMasterScrub(event)">
+             <div id="hud-progress"></div>
+             <div id="hud-laser"></div>
+          </div>
+          <span id="hud-time-total">0:00</span>
+        </div>
+        <div class="hud-volume">
+          <i class="ph ph-speaker-high" id="hud-vol-icon"></i>
+          <input type="range" id="master-vol" min="0" max="200" value="100" oninput="updateMasterVolume()">
+        </div>
+      </div>
+    </div>
+      
+      <div id="waveform-container">
+        <div id="waveform"></div>
+        <div class="playback-controls">
+          <button id="ws-play-btn"><i class="ph-fill ph-play"></i></button>
+          <span id="ws-time">0:00 / 0:00</span>
+        </div>
+      </div>
+      
+      <!-- Output Result Preview -->
+      <div id="result-container">
+        <div class="result-header">
+          <h3><i class="ph-fill ph-check-circle"></i> Output Ready</h3>
+          <a id="result-download-btn" href="#" download class="btn-primary" style="width:auto; padding:8px 16px; font-size:0.9rem; margin:0;"><i class="ph ph-download-simple"></i> Download File</a>
+        </div>
+        <div id="waveform-out" style="width:100%; height:100px;"></div>
+        <div class="playback-controls">
+          <button id="ws-out-play-btn"><i class="ph-fill ph-play"></i></button>
+          <span id="ws-out-time">0:00 / 0:00</span>
+        </div>
+      </div>
+      
+      <!-- Text Output for Transcribe -->
+      <div id="transcribe-output">
+        <textarea id="transText" readonly></textarea>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('transText').value)">
+          <i class="ph ph-copy"></i> Copy Text
+        </button>
+      </div>
+      
+    </main>
+    
+    <!-- ── 3. Inspector Panel ── -->
+    <aside id="inspector">
+      <div class="inspector-title">Properties</div>
+      
+      <div class="meta-grid">
+        <div class="meta-box">
+          <div class="meta-label">Duration</div>
+          <div class="meta-value" id="meta-duration">--:--</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Size</div>
+          <div class="meta-value" id="meta-size">-- MB</div>
+        </div>
+      </div>
+      
+      <!-- Tool specific inspectors -->
+      
+      <!-- Crop -->
+      <div class="inspector-section" id="insp-crop">
+        <div class="control-group">
+          <label class="control-label">Start Time</label>
+          <input type="text" class="input-text" name="start" value="0" required pattern="[0-9:\.]*" title="Time format: MM:SS (1:30) or seconds (90)" />
+        </div>
+        <div class="control-group">
+          <label class="control-label">End Time</label>
+          <input type="text" class="input-text" name="end" placeholder="e.g. 1:30 or 90" required pattern="[0-9:\.]*" title="Time format: MM:SS (1:30) or seconds (90)" />
+        </div>
+      </div>
+      
+      <!-- Volume -->
+      <div class="inspector-section" id="insp-volume">
+        <div class="control-group">
+          <label class="control-label">Gain (dB) <span style="font-size:0.75rem;color:var(--accent-cyan);float:right;">Live Preview Active</span></label>
+          <input type="number" class="input-text" name="db" value="0" step="1" oninput="if(window.wavesurfer) window.wavesurfer.setVolume(Math.pow(10, parseFloat(this.value||0)/20))" />
+        </div>
+      </div>
+      
+      <!-- Convert -->
+      <div class="inspector-section" id="insp-convert">
+        <div class="control-group">
+          <label class="control-label">Target Format</label>
+          <select class="modern-select input-text" name="format">
+            <option value="mp3">MP3</option>
+            <option value="wav">WAV</option>
+            <option value="flac">FLAC</option>
+            <option value="aac">AAC</option>
+            <option value="ogg">OGG</option>
+            <option value="opus">OPUS</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Extract -->
+      <div class="inspector-section" id="insp-extract">
+        <div class="control-group">
+          <label class="control-label">Start Time (optional)</label>
+          <input type="text" class="input-text" name="start" value="0" pattern="[0-9:\.]*" title="Time format: MM:SS (1:30) or seconds (90)" />
+        </div>
+        <div class="control-group">
+          <label class="control-label">End Time (optional)</label>
+          <input type="text" class="input-text" name="end" placeholder="Full length" pattern="[0-9:\.]*" title="Time format: MM:SS (1:30) or seconds (90)" />
+        </div>
+        <div class="control-group">
+          <label class="control-label">Output Format</label>
+          <select class="modern-select input-text" name="format">
+            <option value="mp3">MP3</option>
+            <option value="wav">WAV</option>
+            <option value="flac">FLAC</option>
+            <option value="aac">AAC</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Speed -->
+      <div class="inspector-section" id="insp-speed">
+        <div class="control-group">
+          <label class="control-label">Playback Speed</label>
+          <input type="range" name="speed" min="0.5" max="2.0" step="0.1" value="1.0" oninput="document.getElementById('speedVal').innerText=this.value+'x'" />
+          <div style="text-align:center; margin-top:8px;" class="meta-value" id="speedVal">1.0x</div>
+        </div>
+      </div>
+      
+      <!-- Fade -->
+      <div class="inspector-section" id="insp-fade">
+        <div class="control-group">
+          <label class="control-label">Fade In Duration (ms)</label>
+          <input type="number" class="input-text" name="fade_in" value="2000" min="0" step="100" />
+        </div>
+        <div class="control-group">
+          <label class="control-label">Fade Out Duration (ms)</label>
+          <input type="number" class="input-text" name="fade_out" value="2000" min="0" step="100" />
+        </div>
+      </div>
+      
+      <!-- Normalize -->
+      <div class="inspector-section" id="insp-normalize">
+        <div class="control-group">
+          <label class="control-label">Target dBFS</label>
+          <input type="number" class="input-text" name="target_dbfs" value="-20.0" step="1.0" />
+        </div>
+      </div>
+      
+      <!-- Silence -->
+      <div class="inspector-section" id="insp-silence">
+        <div class="control-group">
+          <label class="control-label">Silence Threshold (dBFS)</label>
+          <input type="number" class="input-text" name="threshold" value="-40" />
+        </div>
+        <div class="control-group">
+          <label class="control-label">Min Silence (ms)</label>
+          <input type="number" class="input-text" name="min_silence" value="500" />
+        </div>
+        <div class="control-group">
+          <label class="control-label">Padding (ms)</label>
+          <input type="number" class="input-text" name="padding" value="200" />
+        </div>
+      </div>
+      
+      <!-- Transcribe -->
+      <div class="inspector-section" id="insp-transcribe">
+        <div class="control-group">
+          <label class="control-label">Timestamp Chunk Size (Sec)</label>
+          <input type="number" class="input-text" name="chunk_sec" value="60" min="5" max="300" />
+        </div>
+      </div>
+      
+      <!-- Pro: Best Takes -->
+      <div class="inspector-section" id="insp-besttakes">
+        <p style="font-size:0.85rem; color:var(--text-muted);">AI will aggressively strip dead air and perfectly crossfade the remaining takes into one fluid, fast-paced voiceover track.</p>
+      </div>
+
+      <!-- Pro: Isolate -->
+      <div class="inspector-section" id="insp-isolate">
+        <p style="font-size:0.85rem; color:var(--text-muted);">Instantly strip out vocals or isolate the instrumental backing track using advanced center-channel phase cancellation.</p>
+      </div>
+
+      <!-- Pro: Master -->
+      <div class="inspector-section" id="insp-master">
+        <p style="font-size:0.85rem; color:var(--text-muted);">Applies a broadcast-standard multi-band Loudness normalization (-14 LUFS) and peak limiting to make your mix incredibly punchy and loud without clipping.</p>
+      </div>
+
+      <!-- Pro: Visualizer -->
+      <div class="inspector-section" id="insp-visualizer">
+        <p style="font-size:0.85rem; color:var(--text-muted);">Renders a high-definition 720p .MP4 video featuring a pulsing, cyan-colored waveform perfectly synced to your audio.</p>
+      </div>
+
+      <!-- Pro: TTS -->
+      <div class="inspector-section" id="insp-tts">
+        <div class="control-group">
+          <label class="control-label">AI Voice Actor</label>
+          <select class="modern-select input-text" name="tts_voice">
+            <option value="Samantha">Samantha (US Female)</option>
+            <option value="Alex">Alex (US Male)</option>
+            <option value="Daniel">Daniel (UK Male)</option>
+            <option value="Karen">Karen (AU Female)</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label class="control-label">Voiceover Script</label>
+          <textarea class="input-text" name="tts_text" rows="4" placeholder="Type what you want the AI to say..."></textarea>
+        </div>
+      </div>
+
+      <!-- Pro: FX -->
+      <div class="inspector-section" id="insp-fx">
+        <div class="control-group">
+          <label class="control-label">Studio Reverb Level</label>
+          <input type="range" style="width:100%" name="reverb" min="0" max="1" step="0.1" value="0" />
+        </div>
+        <div class="control-group">
+          <label class="control-label">Bass Boost (dB)</label>
+          <input type="range" style="width:100%" name="bass" min="0" max="20" step="1" value="0" />
+        </div>
+      </div>
+      
+      <!-- Pro: 8D -->
+      <div class="inspector-section" id="insp-8d">
+        <p style="font-size:0.85rem; color:var(--text-muted);">Generates an immersive 8D Spatial Audio track that pans seamlessly around your headphones.</p>
+      </div>
+      
+      <!-- Pro: Batch Engine -->
+      <div class="inspector-section" id="insp-batch">
+        <div class="control-group">
+          <label class="control-label">Target Operation</label>
+          <select class="modern-select input-text" name="batch_op" id="batch_op">
+            <option value="normalize">Normalize Volume</option>
+            <option value="silence">Strip Silence</option>
+            <option value="master">AI Mastering Engine</option>
+            <option value="convert">Convert format (MP3)</option>
+          </select>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-top:12px;">Drop 50+ files into the queue. The engine will process them all in the background and auto-download the final masters.</p>
+      </div>
+      
+      <button class="btn-primary" id="run-btn" disabled>
+        <i class="ph ph-play"></i> Process Audio
+      </button>
+      
+    </aside>
+  </div>
+  
+  <div id="toast-container"></div>
+  
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
