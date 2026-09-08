@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 230" width="100%" height="100%">
+  <rect width="900" height="230" rx="10" fill="#0C1017" stroke="#1E293B" stroke-width="1" />
+  <text x="28" y="34" fill="#F1F5F9" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700">Digital Signal Processing &amp; Sidechain Ducking Flow</text>
+
+  <!-- Step 1 -->
+  <g transform="translate(28, 60)">
+    <rect width="186" height="135" rx="6" fill="#111827" stroke="#2563EB" stroke-width="1" />
+    <text x="12" y="24" fill="#60A5FA" font-family="monospace" font-size="11" font-weight="700">01. Voice Stem Input</text>
+    <text x="12" y="46" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Primary Speech Stream</text>
+    <text x="12" y="66" fill="#94A3B8" font-family="sans-serif" font-size="10.5">FFmpeg Dynamic Demux</text>
+    <text x="12" y="86" fill="#94A3B8" font-family="sans-serif" font-size="10.5">VAD Envelope Tracking</text>
+    <text x="12" y="112" fill="#38BDF8" font-family="monospace" font-size="9.5">[voice_in] Reference</text>
+  </g>
+
+  <path d="M 222 128 L 248 128 M 242 122 L 248 128 L 242 134" stroke="#475569" stroke-width="2" stroke-linecap="round" fill="none" />
+
+  <!-- Step 2 -->
+  <g transform="translate(256, 60)">
+    <rect width="186" height="135" rx="6" fill="#111827" stroke="#8B5CF6" stroke-width="1" />
+    <text x="12" y="24" fill="#C084FC" font-family="monospace" font-size="11" font-weight="700">02. BGM Stem &amp; Loop</text>
+    <text x="12" y="46" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Background Music Track</text>
+    <text x="12" y="66" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Stream Duration Match</text>
+    <text x="12" y="86" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Automatic Loop Wrap</text>
+    <text x="12" y="112" fill="#A855F7" font-family="monospace" font-size="9.5">[bgm_in] Pre-Filter</text>
+  </g>
+
+  <path d="M 450 128 L 476 128 M 470 122 L 476 128 L 470 134" stroke="#475569" stroke-width="2" stroke-linecap="round" fill="none" />
+
+  <!-- Step 3 -->
+  <g transform="translate(484, 60)">
+    <rect width="186" height="135" rx="6" fill="#111827" stroke="#EC4899" stroke-width="1" />
+    <text x="12" y="24" fill="#F472B6" font-family="monospace" font-size="11" font-weight="700">03. Sidechain Compression</text>
+    <text x="12" y="46" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Sidechain Ducking -16dB</text>
+    <text x="12" y="66" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Attack: 15ms | Release: 350ms</text>
+    <text x="12" y="86" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Zero Pumping Artifacts</text>
+    <text x="12" y="112" fill="#F43F5E" font-family="monospace" font-size="9.5">sidechaincompress</text>
+  </g>
+
+  <path d="M 678 128 L 704 128 M 698 122 L 704 128 L 698 134" stroke="#475569" stroke-width="2" stroke-linecap="round" fill="none" />
+
+  <!-- Step 4 -->
+  <g transform="translate(712, 60)">
+    <rect width="162" height="135" rx="6" fill="#111827" stroke="#10B981" stroke-width="1" />
+    <text x="12" y="24" fill="#34D399" font-family="monospace" font-size="11" font-weight="700">04. Master Output</text>
+    <text x="12" y="46" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Amix Downmix</text>
+    <text x="12" y="66" fill="#94A3B8" font-family="sans-serif" font-size="10.5">EBU R128 Normalize</text>
+    <text x="12" y="86" fill="#94A3B8" font-family="sans-serif" font-size="10.5">Lossless Render</text>
+    <text x="12" y="112" fill="#10B981" font-family="monospace" font-size="9.5">Master File</text>
+  </g>
+</svg>

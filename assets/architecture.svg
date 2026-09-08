@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090D16" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.55" />
+    </filter>
+  </defs>
+
+  <rect width="940" height="450" rx="12" fill="url(#bgGrad)" stroke="#1E293B" stroke-width="1.5" />
+
+  <text x="40" y="44" fill="#F8FAFC" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700">AUDIO_TOOLS Architecture &amp; DSP Pipeline</text>
+  <text x="40" y="66" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12">High-performance digital signal processing, stem separation, loudness normalization &amp; batch conversion</text>
+
+  <!-- BLOCK 1: AUDIO INGESTION & FORMAT PROBING -->
+  <g transform="translate(40, 95)" filter="url(#shadow)">
+    <rect width="260" height="310" rx="8" fill="#111827" stroke="#1F2937" stroke-width="1.2" />
+    <rect x="0" y="0" width="260" height="34" rx="8" fill="#1F2937" />
+    <text x="16" y="22" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700">01. INGEST &amp; STREAM ANALYSIS</text>
+
+    <g transform="translate(16, 50)">
+      <rect width="228" height="52" rx="6" fill="#0B0F17" stroke="#374151" stroke-width="1" />
+      <text x="12" y="22" fill="#F3F4F6" font-family="monospace" font-size="11" font-weight="600">FFprobe Demuxer</text>
+      <text x="12" y="38" fill="#9CA3AF" font-family="sans-serif" font-size="10">Codec, Sample Rate &amp; Channel Map</text>
+    </g>
+
+    <g transform="translate(16, 114)">
+      <rect width="228" height="66" rx="6" fill="#0B0F17" stroke="#374151" stroke-width="1" />
+      <text x="12" y="22" fill="#F3F4F6" font-family="monospace" font-size="11" font-weight="600">EBU R128 Loudness Scanner</text>
+      <text x="12" y="38" fill="#06B6D4" font-family="sans-serif" font-size="10">Integrated LUFS &amp; True-Peak dBFS</text>
+      <text x="12" y="52" fill="#6B7280" font-family="sans-serif" font-size="9.5">Dual-pass measurement engine</text>
+    </g>
+
+    <g transform="translate(16, 192)">
+      <rect width="228" height="52" rx="6" fill="#0B0F17" stroke="#374151" stroke-width="1" />
+      <text x="12" y="22" fill="#F3F4F6" font-family="monospace" font-size="11" font-weight="600">Silence &amp; Noise Profiler</text>
+      <text x="12" y="38" fill="#9CA3AF" font-family="sans-serif" font-size="10">RMS Floor &amp; Spectral Centroid</text>
+    </g>
+
+    <g transform="translate(16, 260)">
+      <text x="12" y="20" fill="#64748B" font-family="monospace" font-size="10.5">Stream: 48kHz / 32-bit Float</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1 -> 2 -->
+  <g transform="translate(308, 240)">
+    <path d="M 0 0 L 28 0 M 20 -5 L 28 0 L 20 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- BLOCK 2: DSP TRANSFORMATION MATRIX -->
+  <g transform="translate(340, 95)" filter="url(#shadow)">
+    <rect width="260" height="310" rx="8" fill="#111827" stroke="#1F2937" stroke-width="1.2" />
+    <rect x="0" y="0" width="260" height="34" rx="8" fill="#1F2937" />
+    <text x="16" y="22" fill="#A855F7" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700">02. DSP TRANSFORMATION CORE</text>
+
+    <g transform="translate(16, 50)">
+      <rect width="228" height="52" rx="6" fill="#0B0F17" stroke="#374151" stroke-width="1" />
+      <text x="12" y="22" fill="#F3F4F6" font-family="monospace" font-size="11" font-weight="600">Pitch-Preserving Retimer</text>
+      <text x="12" y="38" fill="#C084FC" font-family="sans-serif" font-size="10">FFmpeg atempo WSOLA Algorithm</text>
+    </g>
+
+    <g transform="translate(16, 114)">
+      <rect width="228" height="66" rx="6" fill="#0B0F17" stroke="#374151" stroke-width="1" />
+      <text x="12" y="22" fill="#F3F4F6" font-family="monospace" font-size="11" font-weight="600">Sidechain Ducking Mixer</text>
+      <text x="12" y="38" fill="#A855F7" font-family="sans-serif" font-size="10">Acompressor Dynamic Attenuation</text>
+      <text x="12" y="52" fill="#6B7280" font-family="sans-serif" font-size="9.5">Threshold: -18dB | Attack: 20ms</text>
+    </g>
+
+    <g transform="translate(16, 192)">
+      <rect width="228" height="52" rx="6" fill="#0B0F17" stroke="#374151" stroke-width="1" />
+      <text x="12" y="22" fill="#F3F4F6" font-family="monospace" font-size="11" font-weight="600">Spectral Noise Gate</text>
+      <text x="12" y="38" fill="#9CA3AF" font-family="sans-serif" font-size="10">Afftdn High-Pass &amp; Notch Filters</text>
+    </g>
+
+    <g transform="translate(16, 260)">
+      <text x="12" y="20" fill="#64748B" font-family="monospace" font-size="10.5">Linear Phase FIR DSP</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <g transform="translate(608, 240)">
+    <path d="M 0 0 L 28 0 M 20 -5 L 28 0 L 20 5" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- BLOCK 3: MULTI-TARGET ENCODER & EXPORT -->
+  <g transform="translate(640, 95)" filter="url(#shadow)">
+    <rect width="260" height="310" rx="8" fill="#111827" stroke="#1F2937" stroke-width="1.2" />
+    <rect x="0" y="0" width="260" height="34" rx="8" fill="#1F2937" />
+    <text x="16" y="22" fill="#10B981" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700">03. MULTI-FORMAT ENCODER</text>
+
+    <g transform="translate(16, 50)">
+      <rect width="228" height="52" rx="6" fill="#0B0F17" stroke="#374151" stroke-width="1" />
+      <text x="12" y="22" fill="#F3F4F6" font-family="monospace" font-size="11" font-weight="600">Lossless Master Export</text>
+      <text x="12" y="38" fill="#34D399" font-family="sans-serif" font-size="10">24-bit PCM WAV &amp; FLAC 96kHz</text>
+    </g>
+
+    <g transform="translate(16, 114)">
+      <rect width="228" height="66" rx="6" fill="#0B0F17" stroke="#374151" stroke-width="1" />
+      <text x="12" y="22" fill="#F3F4F6" font-family="monospace" font-size="11" font-weight="600">Broadcast Compressed</text>
+      <text x="12" y="38" fill="#10B981" font-family="sans-serif" font-size="10">CBR/VBR 320k MP3 &amp; AAC-LC</text>
+      <text x="12" y="52" fill="#6B7280" font-family="sans-serif" font-size="9.5">Target: -14 LUFS (Spotify / Apple)</text>
+    </g>
+
+    <g transform="translate(16, 192)">
+      <rect width="228" height="52" rx="6" fill="#0B0F17" stroke="#374151" stroke-width="1" />
+      <text x="12" y="22" fill="#F3F4F6" font-family="monospace" font-size="11" font-weight="600">Batch Queue Orchestrator</text>
+      <text x="12" y="38" fill="#9CA3AF" font-family="sans-serif" font-size="10">Multi-threaded ThreadPoolExecutor</text>
+    </g>
+
+    <g transform="translate(16, 260)">
+      <text x="12" y="20" fill="#64748B" font-family="monospace" font-size="10.5">Instant afplay Auditioning</text>
+    </g>
+  </g>
+</svg>
